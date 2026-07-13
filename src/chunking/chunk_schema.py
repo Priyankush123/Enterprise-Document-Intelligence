@@ -27,9 +27,6 @@ class ChunkMetadata(BaseModel):
 
 
 class DocumentChunk(BaseModel):
-    """
-    Represents one chunk generated from a document.
-    """
 
     chunk_id: str
 
@@ -37,6 +34,6 @@ class DocumentChunk(BaseModel):
 
     metadata: ChunkMetadata
 
-    embedding: Optional[list[float]] = None
-
-    created_at: datetime = Field(default_factory=datetime.now)
+    created_at: datetime = Field(
+        default_factory=datetime.now
+    )

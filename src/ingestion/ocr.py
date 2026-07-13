@@ -7,44 +7,45 @@ Provides OCR functionality for images and scanned documents.
 from pathlib import Path
 from typing import List, Optional
 
-import easyocr
+from src.models.model_manager import ModelManager
 
 
 class OCRService:
     """
     OCR Service using EasyOCR.
-
-    The EasyOCR Reader is initialized only once and reused
-    for all OCR requests.
     """
 
-    _reader = None
+    def __init__(self, languages: Optional[List[str]] = None):
 
-    def __init__(
-        self,
-        languages: Optional[List[str]] = None
-    ):
+        self.manager = ModelManager()
 
-        if languages is None:
-            languages = ["en"]
+        self.reader = self.manager.load_ocr(
+            languages=languages
+        )
 
-        if OCRService._reader is None:
+    def extract_text(self, image_path: str) -> str:
+        """
+        Extract text from an image.
 
-            OCRService._reader = easyocr.Reader(
-                languages,
-                gpu=False
-            )
+        Parameters
+        ----------
+        image_path : str
+            Path to the image.
 
-    def extract_text(
-        self,
-        image_path: str
-    ) -> str:
+        Returns
+        -------
+        str
+            Extracted text.
+        """
 
         image_path = Path(image_path)
 
-        results = OCRService._reader.readtext(
-            str(image_path)
-        )
+        if not image_path.exists():
+            raise FileNotFoundError(
+                f"{image_path} does not exist."
+            )
+
+        results = self.reader.readtext(str(image_path))
 
         text = "\n".join(
             result[1]
