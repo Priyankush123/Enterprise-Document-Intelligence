@@ -81,15 +81,14 @@ class ModelManager:
 
         if self._reranker is None:
 
-            from sentence_transformers import (
-                CrossEncoder,
-            )
+            from sentence_transformers import CrossEncoder
 
             self._reranker = CrossEncoder(
                 model_name
             )
 
         return self._reranker
+
 
     def get_reranker(self):
 
