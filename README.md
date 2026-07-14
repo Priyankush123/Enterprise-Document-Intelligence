@@ -358,7 +358,8 @@ streamlit run app.py
 
 ## 📊 Dashboard
 
-![Uploading Screenshot 2026-07-14 195130.png…]()
+<img width="1865" height="920" alt="Screenshot 2026-07-14 195130" src="https://github.com/user-attachments/assets/9ccc922e-9657-4094-97a6-3faa821c5d36" />
+
 
 
 ---
