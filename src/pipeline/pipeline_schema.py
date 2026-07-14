@@ -10,6 +10,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, Field
 
+from src.chunking.chunk_schema import DocumentChunk
 from src.ingestion.document_schema import Document
 
 
@@ -19,7 +20,10 @@ class PipelineStatus(str, Enum):
     """
 
     SUCCESS = "SUCCESS"
+
     FAILED = "FAILED"
+
+    SKIPPED = "SKIPPED"
 
 
 class IndexingResult(BaseModel):
@@ -29,7 +33,7 @@ class IndexingResult(BaseModel):
 
     document: Optional[Document] = None
 
-    chunks: Optional[List] = None
+    chunks: List[DocumentChunk] = Field(default_factory=list)
 
     embedding_count: int = 0
 
@@ -39,4 +43,14 @@ class IndexingResult(BaseModel):
 
     message: str = ""
 
-    indexed_at: datetime = Field(default_factory=datetime.now)
+    indexed_at: datetime = Field(
+        default_factory=datetime.now
+    )
+
+    @property
+    def total_chunks(self) -> int:
+        return len(self.chunks)
+
+    @property
+    def success(self) -> bool:
+        return self.status == PipelineStatus.SUCCESS

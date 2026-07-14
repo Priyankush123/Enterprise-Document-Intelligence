@@ -14,7 +14,7 @@ class LLMClient:
 
     def __init__(
         self,
-        model_name: str = "qwen2.5:7b",
+        model_name: str = "qwen2.5:3b",
         temperature: float = 0.2,
     ):
 

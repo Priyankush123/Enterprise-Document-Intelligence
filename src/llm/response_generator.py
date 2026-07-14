@@ -41,12 +41,9 @@ class ResponseGenerator:
         answer = self.llm.generate(prompt)
 
         return RAGResponse(
-
-            question=question,
-
-            answer=answer,
-
-            sources=sources,
-
-            model_name=self.llm.model_name,
-        )
+                question=question,
+                answer=answer,
+                sources=sources,
+                model_name=self.llm.model_name,
+                retrieval_count=len(sources),
+            )
