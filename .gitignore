@@ -1,25 +1,28 @@
 # Virtual Environment
 .venv/
 
-# Python cache
+# Python
 __pycache__/
 *.pyc
 
-# Environment variables
-.env
-
-# Vector database
-vectordb/
-
-# Data
-data/uploads/
-data/processed/
-
-# Jupyter
-.ipynb_checkpoints/
-
-# VS Code
+# IDE
 .vscode/
+.idea/
 
 # Logs
-*.log
+logs/
+
+# Database
+vectordb/
+
+# Streamlit
+.streamlit/secrets.toml
+
+# Models
+*.pt
+*.pth
+*.bin
+
+# OS
+.DS_Store
+Thumbs.db
