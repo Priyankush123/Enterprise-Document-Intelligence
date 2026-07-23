@@ -28,10 +28,10 @@ UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 # Create the pipeline ONCE
 pipeline = IndexingPipeline(
     loader_factory=LoaderFactory,
-    preprocessor=DocumentPreprocessor,
-    chunker=RecursiveChunker,
-    embedder=EmbeddingModel,
-    vector_store=ChromaVectorStore,
+    preprocessor=DocumentPreprocessor(),
+    chunker=RecursiveChunker(),
+    embedder=EmbeddingModel(),
+    vector_store=ChromaVectorStore(),
 )
 
 

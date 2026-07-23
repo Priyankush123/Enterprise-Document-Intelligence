@@ -12,7 +12,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="Enterprise Document Intelligence API",
-    version="1.0.0"
+    version="1.0.0",
+    lifespan=lifespan,
 )
 
 app.include_router(health.router)

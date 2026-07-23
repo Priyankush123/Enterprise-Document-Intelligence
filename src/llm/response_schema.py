@@ -25,6 +25,4 @@ class RAGResponse(BaseModel):
 
     retrieval_count: int
 
-    generated_at: datetime = Field(
-        default_factory=datetime.now
-    )
+    processing_time: float
