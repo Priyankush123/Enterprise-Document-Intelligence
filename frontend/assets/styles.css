@@ -1,0 +1,27 @@
+.main {
+    padding:2rem;
+}
+
+h1 {
+    color:#0E76FD;
+}
+
+div[data-testid="stMetric"]{
+    border-radius:12px;
+    border:1px solid #ddd;
+    padding:15px;
+}
+
+.stButton>button{
+    width:100%;
+    border-radius:8px;
+}
+
+.stDownloadButton>button{
+    width:100%;
+}
+
+hr{
+    margin-top:20px;
+    margin-bottom:20px;
+}
