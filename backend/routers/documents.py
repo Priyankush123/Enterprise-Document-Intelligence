@@ -1,56 +1,98 @@
-from fastapi import APIRouter, Depends
+from pathlib import Path
+
+from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from backend.database import get_db
 from backend.models.document import Document
+from backend.schema.document import DocumentResponse
+
+from src.vectordb.chroma_store import ChromaVectorStore
 
 router = APIRouter(
     prefix="/documents",
-    tags=["Documents"]
+    tags=["Documents"],
 )
 
+UPLOAD_DIR = Path("storage")
 
-@router.post("/")
-def create_document(db: Session = Depends(get_db)):
+vector_store = ChromaVectorStore()
 
-    document = Document(
-        filename="sample.pdf",
-        file_type="pdf",
-        file_size=2048,
-        total_pages=12,
-        total_chunks=38
+
+@router.get(
+    "/",
+    response_model=list[DocumentResponse],
+)
+def get_documents(
+    db: Session = Depends(get_db),
+):
+
+    documents = (
+        db.query(Document)
+        .order_by(Document.uploaded_at.desc())
+        .all()
     )
 
-    db.add(document)
+    return documents
 
-    db.commit()
 
-    db.refresh(document)
+@router.get(
+    "/{document_id}",
+    response_model=DocumentResponse,
+)
+def get_document(
+    document_id: int,
+    db: Session = Depends(get_db),
+):
+
+    document = (
+        db.query(Document)
+        .filter(Document.id == document_id)
+        .first()
+    )
+
+    if not document:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found.",
+        )
 
     return document
 
-@router.get("/")
-def get_documents(db: Session = Depends(get_db)):
-
-    documents = db.query(Document).all()
-
-    return documents
 
 @router.delete("/{document_id}")
 def delete_document(
     document_id: int,
-    db: Session = Depends(get_db)
+    db: Session = Depends(get_db),
 ):
 
-    document = db.query(Document).filter(
-        Document.id == document_id
-    ).first()
+    document = (
+        db.query(Document)
+        .filter(Document.id == document_id)
+        .first()
+    )
 
-    if document is None:
-        return {"message": "Document not found"}
+    if not document:
+        raise HTTPException(
+            status_code=404,
+            detail="Document not found.",
+        )
 
+    # Delete vectors
+    vector_store.delete_document(
+        document.filename
+    )
+
+    # Delete file
+    file_path = UPLOAD_DIR / document.filename
+
+    if file_path.exists():
+        file_path.unlink()
+
+    # Delete metadata
     db.delete(document)
-
     db.commit()
 
-    return {"message": "Document deleted"}
+    return {
+        "message": "Document deleted successfully."
+    }
