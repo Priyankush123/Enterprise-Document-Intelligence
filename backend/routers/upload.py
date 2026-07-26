@@ -72,11 +72,12 @@ def upload_document(
             )
 
         # Save metadata
+        # Save metadata
         document = Document(
             filename=result.document.filename,
             file_type=file.content_type,
             file_size=file_path.stat().st_size,
-            total_pages=result.document.total_pages,
+            total_pages=len(result.document.pages),   
             total_chunks=len(result.chunks),
         )
 
@@ -100,6 +101,18 @@ def upload_document(
 
     except Exception as e:
 
+        # Roll back any pending database transaction
+        db.rollback()
+
+        # If the document was indexed in ChromaDB,
+        # remove it to keep both databases in sync.
+        try:
+            pipeline.vector_store.delete_document(file.filename)
+        except Exception:
+            # Ignore cleanup errors
+            pass
+
+        # Remove uploaded file
         if file_path.exists():
             file_path.unlink()
 

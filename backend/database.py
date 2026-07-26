@@ -1,25 +1,35 @@
+from dotenv import load_dotenv
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, Session, declarative_base
+from sqlalchemy.orm import declarative_base, sessionmaker
 
-DATABASE_URL = "sqlite:///./enterprise.db"
+import os
+
+load_dotenv()
+
+DATABASE_URL = os.getenv("DATABASE_URL")
+
+if DATABASE_URL is None:
+    raise ValueError("DATABASE_URL not found in .env")
 
 engine = create_engine(
     DATABASE_URL,
-    connect_args={"check_same_thread": False}  # SQLite only
+    pool_pre_ping=True,
 )
 
 SessionLocal = sessionmaker(
     autocommit=False,
     autoflush=False,
-    bind=engine
+    bind=engine,
 )
 
 Base = declarative_base()
+
 
 def get_db():
     db = SessionLocal()
 
     try:
         yield db
+
     finally:
         db.close()
