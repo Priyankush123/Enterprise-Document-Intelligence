@@ -6,13 +6,15 @@ from typing import List
 
 from src.models.model_manager import ModelManager
 from src.retrieval.search_result import SearchResult
+from src.config import RERANKER_MODEL, RERANK_TOP_K
+
 
 
 class Reranker:
 
     def __init__(
         self,
-        model_name: str = "BAAI/bge-reranker-base",
+        model_name: str = RERANKER_MODEL,
     ):
 
         self.manager = ModelManager()
@@ -25,7 +27,7 @@ class Reranker:
         self,
         query: str,
         results: List[SearchResult],
-        top_k: int = 3,
+        top_k = RERANK_TOP_K,
     ) -> List[SearchResult]:
 
         if not results:

@@ -11,6 +11,7 @@ from src.retrieval.retriever import Retriever
 from src.retrieval.reranker import Reranker
 from src.retrieval.search_result import SearchResult
 from src.vectordb.chroma_store import ChromaVectorStore
+from src.config import VECTOR_TOP_K, RERANK_TOP_K
 
 
 class RetrievalPipeline:
@@ -44,8 +45,8 @@ class RetrievalPipeline:
     def retrieve(
         self,
         query: str,
-        retrieve_top_k: int = 10,
-        rerank_top_k: int = 3,
+        retrieve_top_k = VECTOR_TOP_K,
+        rerank_top_k = RERANK_TOP_K,
     ) -> List[SearchResult]:
 
         retrieved = self.retriever.retrieve(
@@ -94,8 +95,8 @@ Page : {result.metadata.page_number}
     def retrieve_context(
         self,
         query: str,
-        retrieve_top_k: int = 10,
-        rerank_top_k: int = 3,
+        retrieve_top_k = VECTOR_TOP_K,
+        rerank_top_k = RERANK_TOP_K,
     ):
 
         results = self.retrieve(
