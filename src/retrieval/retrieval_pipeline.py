@@ -68,29 +68,32 @@ class RetrievalPipeline:
         return reranked
 
     def build_context(
-        self,
-        results: List[SearchResult],
-    ) -> str:
-        """
-        Convert retrieved chunks into a context string
-        for the LLM.
-        """
+            self,
+            results: List[SearchResult],
+        ) -> str:
+            """
+            Build a structured context for the LLM.
+            """
 
-        context = []
+            sections = []
 
-        for index, result in enumerate(results, start=1):
+            for index, result in enumerate(results, start=1):
 
-            context.append(
+                sections.append(
+                    f"""
+        ### Source {index}
 
-                f"""Source {index}
-Document : {result.metadata.document_name}
-Page : {result.metadata.page_number}
+        Document: {result.metadata.document_name}
+        Page: {result.metadata.page_number}
 
-{result.text}
-"""
+        Content:
+        {result.text}
+        """.strip()
+                )
+
+            return "\n\n----------------------------------------\n\n".join(
+                sections
             )
-
-        return "\n\n".join(context)
 
     def retrieve_context(
         self,
@@ -111,3 +114,4 @@ Page : {result.metadata.page_number}
         context = self.build_context(results)
 
         return context, results
+    
