@@ -29,6 +29,11 @@ class SearchMetadata(BaseModel):
     )
 
 
+from typing import Optional
+
+from pydantic import BaseModel, Field
+
+
 class SearchResult(BaseModel):
     """
     Represents one retrieved chunk from ChromaDB.
@@ -43,7 +48,12 @@ class SearchResult(BaseModel):
     )
 
     score: float = Field(
-        description="Retrieval or reranking score."
+        description="Vector similarity score from ChromaDB."
+    )
+
+    reranker_score: Optional[float] = Field(
+        default=None,
+        description="CrossEncoder reranker score."
     )
 
     metadata: SearchMetadata

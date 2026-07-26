@@ -50,7 +50,7 @@ class Reranker:
 
         for result, score in ranked[:top_k]:
 
-            result.score = float(score)
+            result.reranker_score = float(score)
 
             reranked.append(result)
 

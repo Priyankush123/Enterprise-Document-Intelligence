@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import FileResponse
 from sqlalchemy.orm import Session
 
 from backend.database import get_db
@@ -96,3 +97,4 @@ def delete_document(
     return {
         "message": "Document deleted successfully."
     }
+
