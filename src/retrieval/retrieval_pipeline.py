@@ -11,6 +11,7 @@ from src.retrieval.retriever import Retriever
 from src.retrieval.reranker import Reranker
 from src.retrieval.search_result import SearchResult
 from src.vectordb.chroma_store import ChromaVectorStore
+from src.config import VECTOR_TOP_K, RERANK_TOP_K
 
 
 class RetrievalPipeline:
@@ -44,8 +45,8 @@ class RetrievalPipeline:
     def retrieve(
         self,
         query: str,
-        retrieve_top_k: int = 10,
-        rerank_top_k: int = 3,
+        retrieve_top_k = VECTOR_TOP_K,
+        rerank_top_k = RERANK_TOP_K,
     ) -> List[SearchResult]:
 
         retrieved = self.retriever.retrieve(
@@ -67,35 +68,38 @@ class RetrievalPipeline:
         return reranked
 
     def build_context(
-        self,
-        results: List[SearchResult],
-    ) -> str:
-        """
-        Convert retrieved chunks into a context string
-        for the LLM.
-        """
+            self,
+            results: List[SearchResult],
+        ) -> str:
+            """
+            Build a structured context for the LLM.
+            """
 
-        context = []
+            sections = []
 
-        for index, result in enumerate(results, start=1):
+            for index, result in enumerate(results, start=1):
 
-            context.append(
+                sections.append(
+                    f"""
+        ### Source {index}
 
-                f"""Source {index}
-Document : {result.metadata.document_name}
-Page : {result.metadata.page_number}
+        Document: {result.metadata.document_name}
+        Page: {result.metadata.page_number}
 
-{result.text}
-"""
+        Content:
+        {result.text}
+        """.strip()
+                )
+
+            return "\n\n----------------------------------------\n\n".join(
+                sections
             )
-
-        return "\n\n".join(context)
 
     def retrieve_context(
         self,
         query: str,
-        retrieve_top_k: int = 10,
-        rerank_top_k: int = 3,
+        retrieve_top_k = VECTOR_TOP_K,
+        rerank_top_k = RERANK_TOP_K,
     ):
 
         results = self.retrieve(
@@ -110,3 +114,4 @@ Page : {result.metadata.page_number}
         context = self.build_context(results)
 
         return context, results
+    

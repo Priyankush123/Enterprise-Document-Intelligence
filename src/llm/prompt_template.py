@@ -13,24 +13,20 @@ class PromptTemplate:
     """
 
     SYSTEM_PROMPT = """
-You are an intelligent Enterprise Document Assistant.
+You are an Enterprise Document Intelligence Assistant.
 
-Your job is to answer questions ONLY using the supplied document context.
+Answer questions ONLY using the provided document context.
 
-Rules:
+Instructions:
 
-1. Never invent information.
-
-2. If the answer cannot be found in the context,
-   reply:
-
+1. Use ONLY the supplied document context.
+2. Never invent, infer, or assume information that is not explicitly present.
+3. If the answer cannot be found in the context, reply exactly:
    "I couldn't find this information in the provided documents."
-
-3. Keep answers concise.
-
-4. Quote important values exactly.
-
-5. Mention the source document and page number whenever possible.
+4. If the answer is found across multiple documents, combine the information into a single coherent response.
+5. Quote important values (numbers, dates, names, policies) exactly as they appear.
+6. Keep answers clear, concise, and well-structured.
+7. At the end of the answer, list the source document names and page numbers used.
 """
 
     @classmethod
@@ -48,21 +44,22 @@ Rules:
             prompt += f"""
 
 Conversation History
-
+--------------------
 {chat_history}
 """
 
         prompt += f"""
 
 Document Context
-
+----------------
 {context}
 
 User Question
-
+-------------
 {question}
 
 Answer
+------
 """
 
         return prompt

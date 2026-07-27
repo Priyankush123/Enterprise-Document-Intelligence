@@ -8,6 +8,7 @@ from typing import List
 
 from src.embeddings.embedding_model import EmbeddingModel
 from src.vectordb.chroma_store import ChromaVectorStore
+from src.config import VECTOR_TOP_K 
 
 
 class Retriever:
@@ -27,7 +28,7 @@ class Retriever:
     def retrieve(
         self,
         query: str,
-        top_k: int = 10,
+        top_k = VECTOR_TOP_K,
     ):
 
         query_embedding = self.embedder.embed_query(
