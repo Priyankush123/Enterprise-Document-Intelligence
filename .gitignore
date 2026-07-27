@@ -1,32 +1,139 @@
-# Virtual Environment
-.venv/
-.env
-.env.example
-src/config.py
-
+# ==========================
 # Python
+# ==========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
 
+# ==========================
+# Virtual Environments
+# ==========================
+venv/
+.venv/
+env/
+ENV/
+
+# ==========================
+# Environment Variables
+# ==========================
+.env
+.env.*
+!.env.example
+
+# ==========================
 # IDE
+# ==========================
 .vscode/
 .idea/
+*.swp
+*.swo
 
-# Logs
-logs/
-docs/
+# ==========================
+# Jupyter
+# ==========================
+.ipynb_checkpoints/
 
-# Database
-vectordb/
-
+# ==========================
 # Streamlit
+# ==========================
 .streamlit/secrets.toml
 
-# Models
+# ==========================
+# Logs
+# ==========================
+logs/
+*.log
+
+# ==========================
+# Database
+# ==========================
+*.db
+*.sqlite3
+*.sqlite
+
+# PostgreSQL dumps
+*.sql
+
+# ==========================
+# ChromaDB
+# ==========================
+vectordb/
+chroma/
+chromadb/
+
+# ==========================
+# Uploaded Documents
+# ==========================
+uploads/
+temp/
+tmp/
+doc/
+
+# ==========================
+# AI Models
+# ==========================
+models/
+checkpoints/
 *.pt
 *.pth
+*.onnx
+*.ckpt
+*.safetensors
 *.bin
 
-# OS
+# Keep folder structure
+!models/.gitkeep
+!uploads/.gitkeep
+
+# ==========================
+# Hugging Face Cache
+# ==========================
+.cache/
+huggingface/
+.huggingface/
+
+# ==========================
+# EasyOCR Cache
+# ==========================
+EasyOCR/
+ocr_models/
+
+# ==========================
+# PyTorch Cache
+# ==========================
+torch_cache/
+
+# ==========================
+# Docker
+# ==========================
+.docker/
+docker-compose.override.yml
+
+# ==========================
+# OS Files
+# ==========================
 .DS_Store
 Thumbs.db
+desktop.ini
+
+# ==========================
+# Testing
+# ==========================
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+
+# ==========================
+# Misc
+# ==========================
+*.bak
+*.tmp
+*.temp

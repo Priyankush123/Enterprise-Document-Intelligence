@@ -1,0 +1,365 @@
+# 📚 Enterprise Document Intelligence Platform
+
+> An AI-powered Enterprise Document Intelligence Platform that enables semantic search, Retrieval-Augmented Generation (RAG), and conversational question answering over enterprise documents using Large Language Models (LLMs).
+
+---
+
+## 🚀 Overview
+
+Enterprise organizations manage large volumes of documents such as policies, contracts, reports, research papers, invoices, and manuals. Traditional keyword-based search often struggles to retrieve relevant information because it cannot understand the semantic meaning of text.
+
+This project leverages **Retrieval-Augmented Generation (RAG)**, **vector embeddings**, and **Large Language Models (LLMs)** to provide intelligent document understanding and conversational question answering.
+
+Users can upload multiple documents, ask questions in natural language, and receive accurate, source-aware responses generated from the uploaded knowledge base.
+
+---
+
+## ✨ Features
+
+- 📄 Upload multiple documents
+  - PDF
+  - DOCX
+  - PPTX
+  - Images (OCR)
+- 🔍 Semantic Search
+- 🤖 Retrieval-Augmented Generation (RAG)
+- 💬 Conversational Question Answering
+- 📚 Multi-document Querying
+- 📝 Intelligent Document Chunking
+- 🖼 OCR Support using EasyOCR
+- 🧠 Cross-Encoder Re-ranking
+- 📌 Source-aware Responses
+- 💾 ChromaDB Vector Database
+- 🗄 PostgreSQL Metadata Storage
+- ⚡ FastAPI Backend
+- 🎨 Streamlit Frontend
+- 📊 Dashboard for Document Management
+
+---
+
+# 🏗️ System Architecture
+
+```
+                    ┌───────────────────────────┐
+                    │     Streamlit Frontend     │
+                    └─────────────┬─────────────┘
+                                  │
+                                  ▼
+                         FastAPI Backend
+                                  │
+          ┌───────────────────────┼────────────────────────┐
+          ▼                       ▼                        ▼
+  Document Upload          Metadata Storage          Chat API
+          │                       │
+          ▼                       ▼
+      OCR (EasyOCR)         PostgreSQL Database
+          │
+          ▼
+     Text Processing
+          │
+          ▼
+ Intelligent Chunking
+          │
+          ▼
+ Sentence Transformer Embeddings
+          │
+          ▼
+   ChromaDB Vector Store
+          │
+          ▼
+ Semantic Retrieval
+          │
+          ▼
+ CrossEncoder Re-ranking
+          │
+          ▼
+      Ollama LLM
+          │
+          ▼
+ Source-aware Response
+```
+
+---
+
+# 🛠️ Tech Stack
+
+| Category | Technologies |
+|----------|--------------|
+| Programming Language | Python |
+| Backend | FastAPI |
+| Frontend | Streamlit |
+| Database | PostgreSQL |
+| Vector Database | ChromaDB |
+| ORM | SQLAlchemy |
+| Database Migration | Alembic |
+| LLM Framework | LangChain |
+| Embedding Model | Sentence Transformers |
+| LLM | Ollama |
+| OCR | EasyOCR |
+| Re-ranking | CrossEncoder |
+| Document Parsing | PyMuPDF, python-docx, python-pptx |
+
+---
+
+# 📂 Project Structure
+
+```
+Enterprise-Document-Intelligence/
+│
+├── backend/
+│   ├── api/
+│   ├── database/
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   └── main.py
+│
+├── frontend/
+│   ├── pages/
+│   └── Home.py
+│
+├── src/
+│   ├── embeddings/
+│   ├── ingestion/
+│   ├── llm/
+│   ├── preprocessing/
+│   ├── reranker/
+│   ├── retrieval/
+│   ├── vectorstore/
+│   └── utils/
+│
+├── uploads/
+├── vectordb/
+├── docs/
+├── requirements.txt
+├── README.md
+└── .env.example
+```
+
+---
+
+# ⚙️ Installation
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/<your-username>/Enterprise-Document-Intelligence.git
+
+cd Enterprise-Document-Intelligence
+```
+
+---
+
+## Create a Virtual Environment
+
+### Windows
+
+```bash
+python -m venv venv
+venv\Scripts\activate
+```
+
+### Linux / macOS
+
+```bash
+python3 -m venv venv
+source venv/bin/activate
+```
+
+---
+
+## Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## Configure Environment Variables
+
+Create a `.env` file in the project root.
+
+```env
+DATABASE_URL=postgresql://postgres:password@localhost:5432/enterprise_document_db
+
+OLLAMA_URL=http://localhost:11434
+
+OLLAMA_MODEL=qwen2.5:3b
+```
+
+---
+
+## Run Ollama
+
+```bash
+ollama serve
+```
+
+Download the required model:
+
+```bash
+ollama pull qwen2.5:3b
+```
+
+---
+
+## Run FastAPI Backend
+
+```bash
+uvicorn backend.main:app --reload
+```
+
+API Documentation:
+
+```
+http://localhost:8000/docs
+```
+
+---
+
+## Run Streamlit Frontend
+
+```bash
+streamlit run frontend/Home.py
+```
+
+---
+
+# 🔄 Workflow
+
+```
+Upload Documents
+        │
+        ▼
+Document Parsing
+        │
+        ▼
+OCR (if required)
+        │
+        ▼
+Text Cleaning
+        │
+        ▼
+Document Chunking
+        │
+        ▼
+Embedding Generation
+        │
+        ▼
+ChromaDB Indexing
+        │
+        ▼
+User Query
+        │
+        ▼
+Semantic Retrieval
+        │
+        ▼
+CrossEncoder Re-ranking
+        │
+        ▼
+LLM Prompt Generation
+        │
+        ▼
+Answer with Source References
+```
+
+---
+
+# 📡 API Endpoints
+
+| Method | Endpoint | Description |
+|---------|----------|-------------|
+| POST | `/upload` | Upload one or more documents |
+| POST | `/chat` | Ask questions about uploaded documents |
+| GET | `/documents` | Retrieve uploaded documents |
+| DELETE | `/documents/{id}` | Delete a document |
+| GET | `/stats` | Platform statistics |
+
+---
+
+# 📸 Screenshots
+
+## Home Page
+
+![alt text](image.png)
+
+---
+
+## Document Upload
+
+![alt text](image-1.png)
+
+---
+
+## Chat Interface
+
+![alt text](image-2.png)
+
+---
+
+## Documents Library
+
+![alt text](image-3.png)
+
+---
+
+## Dashboard
+
+![alt text](image-4.png)
+
+---
+
+# 🎯 Use Cases
+
+- Enterprise Knowledge Management
+- HR Policy Assistant
+- Legal Document Search
+- Research Paper Retrieval
+- Financial Report Analysis
+- Technical Documentation Assistant
+- Customer Support Knowledge Base
+
+---
+
+# 🔮 Future Improvements
+
+- Hybrid Search (BM25 + Dense Retrieval)
+- Role-Based Access Control (RBAC)
+- Multi-user Support
+- Redis Caching
+- Streaming Responses
+- Document Versioning
+- Feedback-based Ranking
+- Cloud Deployment
+- Docker Support
+- Kubernetes Deployment
+
+---
+
+# 👨‍💻 Author
+
+**Priyankush Biswas**
+
+MCA, Jawaharlal Nehru University
+
+**Areas of Interest**
+
+- Artificial Intelligence
+- Machine Learning
+- Natural Language Processing
+- Large Language Models (LLMs)
+- Retrieval-Augmented Generation (RAG)
+
+**GitHub:** https://github.com/Priyankush123
+
+**LinkedIn:** https://linkedin.com/in/priyankush-biswas-a35aa7333
+
+---
+
+# ⭐ Support
+
+If you found this project helpful, consider giving it a ⭐ on GitHub.
+
+Your support is greatly appreciated!
